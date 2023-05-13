@@ -34,11 +34,15 @@ if(!empty($_POST)) {
 
     if(empty($errors)){
 
-       $req = $pdo->prepare("INSERT INTO users SET username = ?, password = ?, email = ?");
+       $req = $pdo->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?");
        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-       $req->execute([$_POST['username'], $password, $_POST['email']]);
-       die('Notre compte a bien été crée');
-    }
+       $token = str_random(60);
+       $req->execute([$_POST['username'], $password, $_POST['email'], $token]);
+       $user_id = $pdo->lastInsertId();
+       mail($_POST['email'], 'Confirmation de votre compte', "Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://localhost/projet-php/confirm.php?id=$user_id&token=$token");
+       header('Location: login.php');
+       exit();
+    } 
 
 }
 
