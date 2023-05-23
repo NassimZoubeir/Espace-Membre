@@ -1,5 +1,6 @@
-<?php require 'inc/header.php';
+<?php 
 use PHPMailer\PHPMailer\PHPMailer;
+require 'inc/header.php';
 require 'vendor/autoload.php';
 ?>
 
@@ -96,7 +97,7 @@ if(!empty($_POST)) {
 
         // Sujet et contenu du message
         $subject = 'Test d\'e-mail avec PHPMailer et mail()';
-        $message = 'Ceci est un test d\'e-mail envoyé depuis PHPMailer et la fonction mail()';
+        $message = 'Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://localhost:8080/projet-php/confirm.php?id=$user_id&token=$token';
 
         // Utiliser PHPMailer pour envoyer l'e-mail
         $mail = new PHPMailer();
