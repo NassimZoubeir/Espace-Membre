@@ -36,89 +36,40 @@ if(!empty($_POST)) {
         $errors['password'] = "Vous devez rentrer un mot de passe valide";
     }
 
-    // if(empty($errors)){
+    if (empty($errors)) {
 
-    //     require_once 'inc/functions.php';
-        
-    //     $req = $pdo->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?");
-    //     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-    //     $token = str_random(60);
-    //     $req->execute([$_POST['username'], $password, $_POST['email'], $token]);
-    //     $user_id = $pdo->lastInsertId();
-    //     mail($_POST['email'], 'Confirmation de votre compte', "Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://localhost:8080/projet-php/confirm.php?id=$user_id&token=$token");
-    //     header('Location: login.php');
-    //     exit();
-        // if (mail($_POST['email'], 'Confirmation de votre compte', "Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://localhost:8080/projet-php/confirm.php?id=$user_id&token=$token")) {
-        //     echo 'Le message a bien été envoyé';
-        //     header('Location: login.php');
-        //     exit();
-        // } else {
-        // echo 'L\'envoi du message a échoué : ' . error_get_last()['message'];
-        // } 
-    //}
+        require_once 'inc/functions.php';
 
-    // if (empty($errors)) {
-    //     require_once 'inc/functions.php';
-        
-    //     $req = $pdo->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?");
-    //     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-    //     $token = str_random(60);
-    //     $req->execute([$_POST['username'], $password, $_POST['email'], $token]);
-    //     $user_id = $pdo->lastInsertId();
-        
-    //     // Configuration des paramètres SMTP pour MAMP
-    //     ini_set('SMTP', 'localhost');
-    //     ini_set('smtp_port', '25'); // Numéro de port SMTP de MAMP par défaut
-        
-    //     // Envoi de l'e-mail
-    //     $to = $_POST['email'];
-    //     $subject = 'Confirmation de votre compte';
-    //     $message = "Afin de valider votre compte, merci de cliquer sur ce lien : \n\nhttp://localhost:8080/projet-php/confirm.php?id=$user_id&token=$token";
-    //     $headers = "From: zoubeirnassim@gmail.com"; // Remplacez par votre adresse e-mail
-        
-    //     if (mail($to, $subject, $message, $headers)) {
-    //         echo 'Le message a bien été envoyé';
-    //         header('Location: login.php');
-    //         exit();
-    //     } else {
-    //         echo 'L\'envoi du message a échoué.';
-    //     } 
-    // }
+        $req = $pdo->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?");
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $token = str_random(60);
+        $req->execute([$_POST['username'], $password, $_POST['email'], $token]);
+        $user_id = $pdo->lastInsertId();
 
-        // Configurer les informations de connexion à Gmail
-        $smtpHost = 'smtp.gmail.com';
-        $smtpPort = 587;
-        $smtpUsername = 'zoubeirnassim@gmail.com';
-        $smtpPassword = 'MOT_DE_PASSE_APPLICATION_GOOGLE';
+        // Configuration des paramètres SMTP pour MailDev
+        $smtpHost = 'localhost';
+        $smtpPort = 1025;
+        $smtpUsername = ''; 
+        $smtpPassword = ''; 
 
-        // Destinataire et expéditeur
-        $recipient = 'MAIL DU DESTINATAIRE';
-        $sender = 'zoubeirnassim@gmail.com';
 
-        // Sujet et contenu du message
-        $subject = 'Test d\'e-mail avec PHPMailer et mail()';
-        $message = 'Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://localhost:8080/projet-php/confirm.php?id=$user_id&token=$token';
+        ini_set('SMTP', $smtpHost);
+        ini_set('smtp_port', $smtpPort);
 
-        // Utiliser PHPMailer pour envoyer l'e-mail
-        $mail = new PHPMailer();
-        $mail->isSMTP();
-        $mail->Host = $smtpHost;
-        $mail->Port = $smtpPort;
-        $mail->SMTPAuth = true;
-        $mail->Username = $smtpUsername;
-        $mail->Password = $smtpPassword;
-        $mail->SMTPSecure = 'tls';
+        // Utiliser la fonction mail pour envoyer l'e-mail
+        $to = $_POST['email'];
+        $subject = 'Confirmation de votre compte';
+        $message = "Afin de valider votre compte, merci de cliquer sur ce lien :\n\nhttp://localhost:8888/projet-php/confirm.php?id=$user_id&token=$token";
+        $headers = 'From: Nassim <zoubeirnassim@gmail.com>';
 
-        $mail->setFrom($sender);
-        $mail->addAddress($recipient);
-        $mail->Subject = $subject;
-        $mail->Body = $message;
 
-        if ($mail->send()) {
-            echo 'L\'e-mail a été envoyé avec succès !';
+        if (mail($to, $subject, $message, $headers)) {
+            header('Location: login.php');
+            exit();
         } else {
-            echo 'Une erreur est survenue lors de l\'envoi de l\'e-mail : ' . $mail->ErrorInfo;
+            echo 'Une erreur est survenue lors de l\'envoi de l\'e-mail.';
         }
+    }
             
         }
 
