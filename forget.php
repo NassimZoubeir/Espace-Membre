@@ -13,7 +13,6 @@ if(!empty($_POST) && !empty($_POST['email'])) {
         session_start();
         $reset_token = str_random(60);
         $pdo->prepare('UPDATE users SET reset_token = ?, reset_at = NOW() WHERE id = ?')->execute([$reset_token, $user->id]);
-        $_SESSION['flash']['success'] = "Les instructions du rappel de mot de passe vous ont été envoyées par email";
         
 
          $smtpHost = 'localhost';
@@ -31,7 +30,7 @@ if(!empty($_POST) && !empty($_POST['email'])) {
         $headers = 'From: Nassim <zoubeirnassim@gmail.com>';
 
         if (mail($to, $subject, $message, $headers)) {
-            $_SESSION['flash']['success'] = "Un email vous a été envoyé pour modifier votre mot de passe";
+            $_SESSION['flash']['success'] = "Les instructions du rappel de mot de passe vous ont été envoyées par email";
             header('Location: login.php');
             exit();
         } else {
