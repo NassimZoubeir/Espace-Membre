@@ -1,10 +1,7 @@
 <?php 
-use PHPMailer\PHPMailer\PHPMailer;
-require 'inc/header.php';
-require 'vendor/autoload.php';
-?>
+ require_once 'inc/functions.php'; 
+session_start();
 
-<?php 
 if(!empty($_POST)) {
 
     $errors = array();
@@ -64,6 +61,7 @@ if(!empty($_POST)) {
 
 
         if (mail($to, $subject, $message, $headers)) {
+            $_SESSION['flash']['success'] = "Un email de confirmation vous a été envoyé pour valider votre compte";
             header('Location: login.php');
             exit();
         } else {
@@ -74,6 +72,8 @@ if(!empty($_POST)) {
         }
 
 ?>
+
+<?php require 'inc/header.php'; ?>
 
 <h1>S'inscrire</h1>
 
