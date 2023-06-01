@@ -1,49 +1,41 @@
 <?php 
- require_once 'inc/functions.php'; 
-session_start();
+ require_once 'inc/bootstrap.php'; 
 
 if(!empty($_POST)) {
 
     $errors = array();
-    require_once 'inc/db.php';
-
-    if(empty($_POST['username']) || !preg_match('/^[a-zA-Z0-9_]+$/', $_POST['username'])){
-        $errors['username'] ="Votre pseudo n'est pas valide (alphanumérique)";
-    } else {
-        $req = $pdo->prepare('SELECT id FROM users WHERE username = ?');
-        $req->execute([$_POST['username']]);
-        $user = $req->fetch();
-       if($user) {
-        $errors['username'] = 'Ce pseudo est déjà pris';
-       }
+   
+    $db = App::getDatabase();
+    $validator = new Validator($_POST);
+    $validator->isAlpha('username',"Votre pseudo n'est pas valide (alphanumérique)");
+    if($validator->isValid()) {
+        $validator->isUniq('username', $db, 'users', 'Ce pseudo est déjà pris');
+    }
+    $validator->isEmail('email', "Votre email n'est pas valide");
+    if($validator->isValid()) {
+        $validator->isUniq('email', $db, 'users', 'Cet email est déjà utilisé pour un autre compte');
     }
 
-    if(empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-        $errors['email'] ="Votre email n'est pas valide";
-     } else {
-        $req = $pdo->prepare('SELECT id FROM users WHERE email = ?');
-        $req->execute([$_POST['email']]);
-        $user = $req->fetch();
-       if($user) {
-        $errors['email'] = 'Cet email est déjà utilisé pour un autre compte';
-       }
-    }
+    $validator->isConfirmed('password',"Vous devez rentrer un mot de passe valide");
+   
 
-    if(empty($_POST['password']) || $_POST['password'] != $_POST['password_confirm']){
-        $errors['password'] = "Vous devez rentrer un mot de passe valide";
-    }
-
-    if (empty($errors)) {
+    if($validator->isValid()) {
 
         require_once 'inc/functions.php';
 
-        $req = $pdo->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?, reset_token = ?, remember_token = ?");
+       
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $token = str_random(60);
         $resetToken = "";
         $rememberToken = "";
-        $req->execute([$_POST['username'], $password, $_POST['email'], $token, $resetToken, $rememberToken]);
-        $user_id = $pdo->lastInsertId();
+        $db->query("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?, reset_token = ?, remember_token = ?", [
+            $_POST['username'], 
+            $password, 
+            $_POST['email'], 
+            $token, 
+            $resetToken, 
+            $rememberToken]);
+        $user_id = $db->lastInsertId();
 
         // Configuration des paramètres SMTP pour MailDev
         $smtpHost = 'localhost';
@@ -69,6 +61,9 @@ if(!empty($_POST)) {
         } else {
             echo 'Une erreur est survenue lors de l\'envoi de l\'e-mail.';
         }
+
+    } else {
+        $errors = $validator->getErrors();
     }
             
         }
