@@ -37,10 +37,12 @@ if(!empty($_POST)) {
 
         require_once 'inc/functions.php';
 
-        $req = $pdo->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?");
+        $req = $pdo->prepare("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?, reset_token = ?, remember_token = ?");
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
         $token = str_random(60);
-        $req->execute([$_POST['username'], $password, $_POST['email'], $token]);
+        $resetToken = "";
+        $rememberToken = "";
+        $req->execute([$_POST['username'], $password, $_POST['email'], $token, $resetToken, $rememberToken]);
         $user_id = $pdo->lastInsertId();
 
         // Configuration des paramètres SMTP pour MailDev
