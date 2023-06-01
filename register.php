@@ -21,28 +21,18 @@ if(!empty($_POST)) {
 
     if($validator->isValid()) {
 
-        require_once 'inc/functions.php';
+        $auth = new Auth($db);
+        $auth->register($_POST['username'], $_POST['password'], $_POST['email']);
+        Session::getInstance()->setFlash('success', "Un email de confirmation vous a été envoyé pour valider votre compte");
+        App::redirect('login.php');
 
-       
-        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-        $token = str_random(60);
-        $resetToken = "";
-        $rememberToken = "";
-        $db->query("INSERT INTO users SET username = ?, password = ?, email = ?, confirmation_token = ?, reset_token = ?, remember_token = ?", [
-            $_POST['username'], 
-            $password, 
-            $_POST['email'], 
-            $token, 
-            $resetToken, 
-            $rememberToken]);
-        $user_id = $db->lastInsertId();
+
 
         // Configuration des paramètres SMTP pour MailDev
         $smtpHost = 'localhost';
         $smtpPort = 1025;
         $smtpUsername = ''; 
         $smtpPassword = ''; 
-
 
         ini_set('SMTP', $smtpHost);
         ini_set('smtp_port', $smtpPort);
@@ -55,9 +45,7 @@ if(!empty($_POST)) {
 
 
         if (mail($to, $subject, $message, $headers)) {
-            $_SESSION['flash']['success'] = "Un email de confirmation vous a été envoyé pour valider votre compte";
-            header('Location: login.php');
-            exit();
+           App::redirect('login.php');
         } else {
             echo 'Une erreur est survenue lors de l\'envoi de l\'e-mail.';
         }

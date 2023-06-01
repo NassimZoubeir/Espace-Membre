@@ -12,4 +12,9 @@ class App{
         }
         return self::$db;
     }
+
+    static function redirect($page) {
+        header("Location: $page");
+        exit();
+    }
 }
