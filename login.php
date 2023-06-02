@@ -1,6 +1,6 @@
 <?php
- require_once 'inc/functions.php';
-
+require 'inc/bootstrap.php';
+require_once 'inc/functions.php';
 reconnect_from_cookie();
 
 if(isset($_SESSION['auth'])) {

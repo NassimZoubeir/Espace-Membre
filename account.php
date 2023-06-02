@@ -1,7 +1,8 @@
 <?php 
 
-require 'inc/functions.php';
-logged_only();
+require 'inc/bootstrap.php';
+$auth = new Auth();
+$auth->restrict(Session::getInstance());
 if(!empty($_POST)) {
 
     if(!empty($_POST['password']) || $_POST['password'] != $_POST['password_confirm']) {
@@ -16,12 +17,6 @@ if(!empty($_POST)) {
         $_SESSION['flash']['success'] = "Votre mot de passe a bien été mis à jour";
     }
 }
-
-
-
-
-
-
 
 require 'inc/header.php';
 ?>
@@ -38,10 +33,5 @@ require 'inc/header.php';
         </div>
     <button class="btn btn-primary">Changer mon mot de passe</button>
     </form>
-
-
-
-
-
 
 <?php require 'inc/footer.php'; ?>
