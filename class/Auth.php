@@ -12,8 +12,12 @@ class Auth{
         $this->session = $session;
     }
 
+    public function hashPassword($password) {
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
+
     public function register($db, $username, $password, $email) {
-        $password = password_hash($password, PASSWORD_BCRYPT);
+        $password = $this->hashPassword($password);
         $token = Str::random(60);
         $resetToken = "";
         $rememberToken = "";
@@ -129,5 +133,39 @@ class Auth{
         public function logout() {
             setcookie('remember', NULL, -1);
             $this->session->delete('auth');
+        }
+
+        public function resetPassword($db, $email) {
+            
+            $user = $db->query('SELECT * FROM users WHERE email = ? AND confirmed_at IS NOT NULL', [$email])->fetch();
+
+            if($user) {
+
+                $reset_token = Str::random(60);
+                $db->query('UPDATE users SET reset_token = ?, reset_at = NOW() WHERE id = ?',[$reset_token, $user->id]);
+                
+                $smtpHost = 'localhost';
+                $smtpPort = 1025;
+                $smtpUsername = ''; 
+                $smtpPassword = ''; 
+        
+                ini_set('SMTP', $smtpHost);
+                ini_set('smtp_port', $smtpPort);
+
+                $to = $_POST['email'];
+                $subject = 'Réinitialisation de votre mot de passe';
+                $message = "Afin de réinitialiser votre mot de passe, merci de cliquer sur ce lien :\n\nhttp://localhost:8888/projet-php/reset.php?id={$user->id}&token=$reset_token";
+                $headers = 'From: Nassim <zoubeirnassim@gmail.com>';
+
+                if (mail($to, $subject, $message, $headers)) {
+                   return $user;
+                } 
+                return false;
+            }
+        }
+
+        public function checkResetToken($db, $user_id, $token) {
+
+        return $db->query('SELECT * FROM users WHERE id = ? AND reset_token IS NOT NULL AND reset_token = ? AND reset_at > DATE_SUB(NOW(), INTERVAL 30 MINUTE)', [$user_id, $token])->fetch();
         }
 }
