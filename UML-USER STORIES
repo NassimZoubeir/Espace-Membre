@@ -1,0 +1,76 @@
+/************** UML **************/
+
+            +-------------------+
+            |   Utilisateur     |
+            +-------------------+
+            |  - id             |
+            |  - nom            |
+            |  - email          |
+            |  - motDePasse     |
+            +-------------------+
+                   |
+           +------------------+
+           |       Film       |
+           +------------------+
+           |  - id            |
+           |  - titre         |
+           |  - description   |
+           |  - dateSortie    |
+           |  - note          |
+           +------------------+
+                   |
+           +------------------+
+           |   Commentaire    |
+           +------------------+
+           |  - id            |
+           |  - idFilm        |
+           |  - idUtilisateur |
+           |  - contenu       |
+           |  - date          |
+           |  - aime          |
+           |  - naime         |
+           +------------------+
+                   |
+           +------------------+
+           | Administrateur   |
+           +------------------+
+           |  - id            |
+           |  - nom           |
+           |  - email         |
+           |  - motDePasse    |
+           +------------------+
+                        |
+                 +--------------+
+                 |   SiteWeb    |
+                 +--------------+
+                 |              |
+                 |              |
+                 |              |
+                 +--------------+
+
+
+/************** User Stories **************/
+
+1. En tant qu'utilisateur, je veux pouvoir consulter la liste des films récemment sortis pour rester informé des dernières sorties cinématographiques.
+
+2. En tant qu'utilisateur, je souhaite pouvoir effectuer une recherche de films par titre, genre, acteurs ou réalisateurs afin de trouver des films correspondant à mes préférences.
+
+3. En tant qu'utilisateur, je veux pouvoir créer un compte afin d'accéder à des fonctionnalités supplémentaires telles que l'ajout de commentaires et la création d'une liste de films favoris.
+
+4. En tant qu'utilisateur connecté, je veux pouvoir ajouter des commentaires sur les films que j'ai vus afin de partager mon avis et mes recommandations avec la communauté.
+
+5. En tant qu'utilisateur connecté, je souhaite pouvoir noter les films afin de contribuer à l'évaluation générale des films sur le site.
+
+6. En tant qu'utilisateur connecté, je veux pouvoir consulter les commentaires et les notes donnés par d'autres utilisateurs pour me faire une idée sur un film avant de le regarder.
+
+7. En tant qu'utilisateur connecté, je souhaite pouvoir ajouter des films à ma liste de films favoris afin de les retrouver facilement pour les regarder ultérieurement.
+
+8. En tant qu'utilisateur connecté, je veux pouvoir filtrer et trier les films en fonction de différents critères tels que le genre, la note ou la date de sortie pour trouver des films correspondant à mes préférences.
+
+9. En tant qu'administrateur, je veux pouvoir gérer les membres existants, y compris la visualisation des informations des membres, la désactivation ou la suppression de comptes si nécessaire.
+
+10. En tant qu'administrateur, je souhaite pouvoir gérer les commentaires publiés par les utilisateurs, y compris la visualisation, la suppression ou le signalement de commentaires inappropriés.
+
+11. En tant qu'administrateur, je veux pouvoir consulter des statistiques sur l'utilisation du site, telles que le nombre total de membres, le nombre de commentaires publiés, etc.
+
+12. En tant qu'administrateur, je souhaite pouvoir gérer les autres administrateurs, y compris l'ajout de nouveaux administrateurs, la modification des informations des administrateurs existants ou la suppression de comptes d'administrateurs si nécessaire.
