@@ -74,3 +74,24 @@
 11. En tant qu'administrateur, je veux pouvoir consulter des statistiques sur l'utilisation du site, telles que le nombre total de membres, le nombre de commentaires publiés, etc.
 
 12. En tant qu'administrateur, je souhaite pouvoir gérer les autres administrateurs, y compris l'ajout de nouveaux administrateurs, la modification des informations des administrateurs existants ou la suppression de comptes d'administrateurs si nécessaire.
+
+
+/************** User Stories **************/
+
+En tant qu'utilisateur, je veux pouvoir consulter la liste des films disponibles sur le site pour découvrir de nouveaux films à regarder.
+
+En tant qu'utilisateur, je souhaite pouvoir rechercher des films par titre pour trouver rapidement un film spécifique.
+
+En tant qu'utilisateur, je veux pouvoir créer un compte afin d'accéder à des fonctionnalités supplémentaires telles que l'ajout de commentaires.
+
+En tant qu'utilisateur connecté, je souhaite pouvoir ajouter des commentaires sur les films pour partager mon avis et mes recommandations avec d'autres utilisateurs.
+
+En tant qu'utilisateur connecté, je veux pouvoir modifier ou supprimer mes propres commentaires sur les films.
+
+En tant qu'administrateur, je veux pouvoir ajouter de nouveaux films à la base de données du site.
+
+En tant qu'administrateur, je souhaite pouvoir modifier ou supprimer des films existants dans la base de données du site.
+
+En tant qu'administrateur, je veux pouvoir afficher la liste des commentaires pour chaque film et les supprimer si nécessaire.
+
+En tant qu'administrateur, je souhaite pouvoir gérer les comptes utilisateurs, y compris la visualisation des informations des utilisateurs et la désactivation ou la suppression de comptes si nécessaire.
