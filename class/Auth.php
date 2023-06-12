@@ -96,7 +96,7 @@ class Auth{
                 $user = $db->query('SELECT * FROM users WHERE id = ?', [$user_id])->fetch();
                 if($user) {
                     $expected = $user_id .'=='. $user->$remember_token . sha1($user_id . 'ratonlaveurs');
-                    if($expected == $_remember_token) {
+                    if($expected == $remember_token) {
                         $this->connect($user);
                         setcookie('remember', $remember_token, time() + 60 * 60 * 24 * 7);
                     }
