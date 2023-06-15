@@ -32,7 +32,7 @@ require_once 'class/Session.php';
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Mon super projet </a>
+          <a class="navbar-brand" href="#">Gestion de compte </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
